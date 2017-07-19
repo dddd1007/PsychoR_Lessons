@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#读取本地文件名并选出所有CSV格式文件\nfileName <- dir()[stringr::str_detect(dir(), \".csv\")] \n#预定义合并后的总表格\ntotalTable <- data.frame(matrix(0, ncol = length(read.csv(fileName[1]))))\n\n#校验所有的表格列数是否一致\ncheckColNum <- function(x) {\n  colNum <- ncol(read.csv(x[1]))\n  for(i in x){\n    if(colNum != ncol(read.csv(i))){\n      cat(\"The table\", i, \"have wrong column number!\",\"\\n\",sep = \" \")\n    }\n  }\n}\ncheckColNum(fileName)\n\n#手工检查有误的那一个文件\nfor(i in fileName){\n  tempData <- read.csv(i)\n  names(tempData) <- names(totalTable)\n  totalTable <- rbind(totalTable,tempData)\n}\n",
+    "created" : 1481271967546.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2039894598",
+    "id" : "3A67F5B2",
+    "lastKnownWriteTime" : 3342080358446268422,
+    "last_content_update" : 1481367567086,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

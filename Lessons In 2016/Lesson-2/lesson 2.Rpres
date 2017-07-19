@@ -1,0 +1,208 @@
+第二课：高级数据结构
+========================================================
+author: 夏骁凯
+date: 2016年11月28日
+autosize: true
+
+本节课程知识点
+========================================================
+- 函数
+- 数据框、矩阵
+- 因子
+- 列表
+
+函数
+=====================
+简单的认识一下：
+
+c( )
+
+hist( )
+
+rnorm( )
+
+1. 函数
+=========
+定义：在编程环境中完成某项动作的命令，**封装**了一系列复杂的代码
+
+格式：**函数名（形式参数 = 真实参数）**
+
+参数调用
+==========
+- 根据相对位置调用
+- 使用形式参数调用
+
+帮助系统
+=========
+**当我不知道的时候，我就打个问号**
+
+2. 长方形的数据结构：矩阵、数据框
+===========
+![长方形](block.png)
+
+特征：各行、各列长度一致
+
+矩阵与数据框的差异
+===========
+**数据框：**
+
+- 统计概念
+- 横为行（row）或观测（observation），纵为列（column）或属性（attribution）
+- 可以为属性命名
+
+**矩阵：**
+
+- 数学概念，元素只可为数字
+
+举例
+===========
+```{r}
+head(iris) #iris为鸢尾花数据，记录了不同品种的鸢尾花的各位置的长度
+```
+
+数据框的建立
+============
+```{r}
+num <- 1:5
+char <- letters[1:5] #letters是R中内建的向量，内容为小写字母
+mydataframe <- data.frame(number = num, letter = char) #建立数据框，参数中等号前为列名，等号后为索引的向量
+mydataframe
+```
+
+数据框的属性
+==========
+```{r}
+nrow(mydataframe) #查看行数
+ncol(mydataframe) #查看列数
+names(mydataframe) #查看列名
+colnames(mydataframe) #查看列名
+```
+
+数据框的索引（1）
+==========
+```{r}
+mydataframe[,1] #提取第一列
+mydataframe[2,] #提取第二行
+mydataframe[3,2] #提取第三行第五列
+```
+在对数据框使用方括号提取时，逗号前表示行数，逗号后表示列数，空出不写则代表相应的整行/整列
+
+数据框的索引（2）
+=======
+```{r}
+mydataframe$number #使用$符号可以直接根据列名提取数据
+```
+
+数据框的操作（1）
+============
+```{r}
+rbind(mydataframe,mydataframe) #行合并
+cbind(mydataframe,mydataframe) #列合并
+```
+
+数据框的操作（2）
+=========
+- 删除、修改与向量一致
+- 可以使用merge()融合
+- 可以使用na.omit()删除缺失值
+
+数据框的向量化计算
+==========
+```{r}
+x <- cbind(x1 = 3, x2 = c(4:1, 2:5))
+head(x) #head()函数可以简单查看数据框的前六行
+apply(x, 2, sum) #计算每行总和
+apply(x, 1, sum) #计算每列总和
+```
+
+矩阵的建立
+===========
+```{r}
+matrix(1:20, nrow = 5, ncol = 4)
+matrix(1:20, nrow = 4, ncol = 5, byrow = T) #byrow参数决定了矩阵的填充方式
+```
+
+矩阵的属性与操作
+===========
+与数据框相同
+
+3. 离散数据的数据结构：因子
+===========
+称名数据、分类数据，应当使用因子进行存储
+
+因子的建立
+==========
+```{r}
+factor(letters[rep(1:3,3)]) #建立称名变量
+
+factor(letters[rep(1:3,3)], ordered = TRUE) #建立顺序变量
+```
+
+因子的属性
+======
+```{r}
+myfactor <- factor(letters[rep(1:3,3)])
+length(myfactor) #查看因子的长度
+levels(myfactor) #查看因子的水平
+```
+
+因子的索引、操作
+=======
+与向量相同
+
+当因子遇上数据框：分组汇总
+=========
+- 主要函数：aggregate()；by()
+- 基本形式：function(data, by = factor, FUN)
+
+分组汇总示例
+==========
+```{r}
+head(mtcars)
+```
+
+aggregate函数
+==========
+```{r}
+aggregate(mtcars, list(mtcars$cyl), mean)
+```
+
+by函数
+==========
+```{r}
+by(mtcars, mtcars$cyl, sum)
+```
+
+两个函数有什么差别？
+===========
+将aggregate和by中的FUN参数换成head试试？
+
+4. 列表是个筐，什么都能装：列表
+=========
+```{r}
+mylist <- list(letters = letters, mydataframe = mydataframe, myfactor = myfactor) # 列表的建立
+mylist
+```
+
+列表的索引
+========
+```{r}
+mylist$letters
+mylist[[2]]
+```
+
+5. 几个常用的小函数
+============
+```{r}
+str(mylist) #查看数据的结构
+class(mydataframe) #查看数据的类型
+head(mydataframe) #查看数据的前六行
+```
+
+几个常用的小函数
+==========
+```{r}
+as.character(myfactor) #as.*函数可以转换数据类型与数据结构
+is.character(myfactor) #is.*函数可以对数据类型与数据结构进行逻辑判断
+```
+

@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"合并全部量表数据\"\noutput: html_notebook\n---\n\n读取本地文件名并选出所有CSV格式文件\n```{r}\nfileName <- dir()[stringr::str_detect(dir(), \".csv\")] \n```\n\n校验所有的表格列数是否一致\n```{r}\ncheckColNum <- function(x) {\n  colNum <- ncol(read.csv(x[1]))\n  for(i in x){\n    if(colNum != ncol(read.csv(i))){\n      cat(\"The table\", i, \"have wrong column number! And the colmun number is\", ncol(read.csv(i)),\"\\n\",sep = \" \")\n    }\n  }\n}\ncheckColNum(fileName)\n```\n从得到的数据可以大概看出问题。\n\n将不符合列数的数据筛出，随后将数据进行整合。\n```{r}\n#预定义合并后的总表格\ntotalTable <- data.frame(matrix(0, ncol = ncol(read.csv(fileName[1])))) \nnames(totalTable) <- names(read.csv(fileName[1]))\n\n#循环读取所有数据并合并\nfor(i in fileName){\n  if(ncol(read.csv(i)) != ncol(read.csv(fileName[1]))){\n    next()\n  }\n  tempData <- read.csv(i)\n  names(tempData) <- names(read.csv(fileName[1]))\n  totalTable <- rbind(totalTable,tempData)\n}\ntotalTable <- totalTable[-1,]\n```\n\n对得到的数据进行概览\n```{r}\ndplyr::glimpse(dplyr::tbl_df(totalTable))\n```\n\n",
+    "created" : 1481367567955.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "492430620",
+    "id" : "249C3802",
+    "lastKnownWriteTime" : 1481368986,
+    "last_content_update" : 1481368986422,
+    "path" : "~/Documents/Code/PsychoR-lesson/合并全部数据.Rmd",
+    "project_path" : "合并全部数据.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

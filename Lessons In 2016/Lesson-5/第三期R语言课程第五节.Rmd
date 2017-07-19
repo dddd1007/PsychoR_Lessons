@@ -1,0 +1,100 @@
+---
+title: "第三期R语言课程第五节"
+output: 
+  html_document: 
+    theme: cerulean
+    toc: yes
+---
+
+本文档使用Rmarkdown技术，利用Rstudio的Notebook编写。
+```{r}
+knitr::opts_chunk$set(echo=FALSE)
+```
+
+## 对数据的简单掌握
+方法1：Base包中的基本函数
+```{r, echo=FALSE}
+totalTable <- read.csv("totalTable.csv")
+head(totalTable) #查看前六行数据
+tail(totalTable)
+```
+
+方法2：使用dplyr包
+```{r}
+library(dplyr)
+tbl_df(totalTable) %>%
+glimpse()
+```
+
+## 描述统计
+```{r}
+summary(totalTable[1:5]) #base包中的描述统计
+
+library(psych)
+describe(totalTable[1:5]) #psych包中的描述统计
+```
+
+## 简单可视化
+```{r}
+#使用base包
+plot(totalTable[,108])
+hist(totalTable[,108])
+```
+
+```{r}
+#使用ggplot2
+library(ggplot2)
+p <- ggplot(totalTable, aes(x = X5.19))
+p + geom_histogram()
+
+#加上绘图风格
+p + geom_histogram() + theme_bw()
+p + geom_bar() + theme_linedraw()
+
+#加上图例
+p + geom_bar(aes(fill = as.factor(X1.1)))
+```
+
+## 文件操作
+使用dplyr包中的五个函数：select, filter, mutate, summarize, group_by
+管道操作符 %>%：可以将上一个运算得到的结果直接传递给下一个函数的第一个参数
+```{r}
+library(dplyr)
+head(select(totalTable, X1.1))
+head(select(totalTable, starts_with("X1")))
+head(select(totalTable, ends_with(".1")))
+head(select(totalTable, contains(".1.")))
+
+head(filter(totalTable, X1.1 == 2))
+
+head(mutate(totalTable, X1.9 = X1.1 + X1.3))
+
+group_by(totalTable, X1.1) %>%
+summarise(mean = mean(X5.20, na.rm = T), sum = sum(X2.2))
+```
+
+## 假设检验
+### t检验
+```{r t.test}
+#t检验
+t1 <- filter(totalTable, X1.1 == 1)
+t2 <- filter(totalTable, X1.1 == 2)
+t.test(t1$X5.20, t2$X5.20)
+t.test(t1$X5.20, t1$X5.18, paired = T)
+```
+
+### 方差分析
+```{r anova & lm}
+getformula <- X5.1 ~ X1.1 * X1.3
+result <- aov(getformula, totalTable)
+summary(result)
+xtable::xtable(result)
+```
+
+### 卡方检验
+```{r chi.sq}
+table(totalTable$X1.1, totalTable$X5.1)
+
+chisq.test(table(totalTable$X1.1, totalTable$X5.1))
+```
+

@@ -1,0 +1,47 @@
+---
+title: "合并全部量表数据"
+output: html_notebook
+---
+
+读取本地文件名并选出所有CSV格式文件
+```{r}
+fileName <- dir()[stringr::str_detect(dir(), ".csv")] 
+```
+
+校验所有的表格列数是否一致
+```{r}
+checkColNum <- function(x) {
+  colNum <- ncol(read.csv(x[1]))
+  for(i in x){
+    if(colNum != ncol(read.csv(i))){
+      cat("The table", i, "have wrong column number! And the colmun number is", ncol(read.csv(i)),"\n",sep = " ")
+    }
+  }
+}
+checkColNum(fileName)
+```
+从得到的数据可以大概看出问题。
+
+将不符合列数的数据筛出，随后将数据进行整合。
+```{r}
+#预定义合并后的总表格
+totalTable <- data.frame(matrix(0, ncol = ncol(read.csv(fileName[1])))) 
+names(totalTable) <- names(read.csv(fileName[1]))
+
+#循环读取所有数据并合并
+for(i in fileName){
+  if(ncol(read.csv(i)) != ncol(read.csv(fileName[1]))){
+    next()
+  }
+  tempData <- read.csv(i)
+  names(tempData) <- names(read.csv(fileName[1]))
+  totalTable <- rbind(totalTable,tempData)
+}
+totalTable <- totalTable[-1,]
+```
+
+对得到的数据进行概览
+```{r}
+dplyr::glimpse(dplyr::tbl_df(totalTable))
+```
+

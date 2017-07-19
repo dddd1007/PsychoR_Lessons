@@ -1,0 +1,12 @@
+"0","for(i in fileName){
+  if(ncol(read.csv(i)) != ncol(read.csv(x[1]))){
+    next()
+  }
+  tempData <- read.csv(i)
+  names(tempData) <- names(totalTable)
+  totalTable <- rbind(totalTable,tempData)
+}
+"
+"2","Error in read.table(file = file, header = header, sep = sep, quote = quote,  : 
+  object 'x' not found
+"

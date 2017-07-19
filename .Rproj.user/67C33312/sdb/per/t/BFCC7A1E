@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"第三期R语言课程第五节\"\noutput: \n  html_document: \n    theme: cerulean\n    toc: yes\n---\n\n本文档使用Rmarkdown技术，利用Rstudio的Notebook编写。\n```{r}\nknitr::opts_chunk$set(echo=FALSE)\n```\n\n## 对数据的简单掌握\n方法1：Base包中的基本函数\n```{r, echo=FALSE}\ntotalTable <- read.csv(\"totalTable.csv\")\nhead(totalTable) #查看前六行数据\ntail(totalTable)\n```\n\n方法2：使用dplyr包\n```{r}\nlibrary(dplyr)\ntbl_df(totalTable) %>%\nglimpse()\n```\n\n## 描述统计\n```{r}\nsummary(totalTable[1:5]) #base包中的描述统计\n\nlibrary(psych)\ndescribe(totalTable[1:5]) #psych包中的描述统计\n```\n\n## 简单可视化\n```{r}\n#使用base包\nplot(totalTable[,108])\nhist(totalTable[,108])\n```\n\n```{r}\n#使用ggplot2\nlibrary(ggplot2)\np <- ggplot(totalTable, aes(x = X5.19))\np + geom_histogram()\n\n#加上绘图风格\np + geom_histogram() + theme_bw()\np + geom_bar() + theme_linedraw()\n\n#加上图例\np + geom_bar(aes(fill = as.factor(X1.1)))\n```\n\n## 文件操作\n使用dplyr包中的五个函数：select, filter, mutate, summarize, group_by\n管道操作符 %>%：可以将上一个运算得到的结果直接传递给下一个函数的第一个参数\n```{r}\nlibrary(dplyr)\nhead(select(totalTable, X1.1))\nhead(select(totalTable, starts_with(\"X1\")))\nhead(select(totalTable, ends_with(\".1\")))\nhead(select(totalTable, contains(\".1.\")))\n\nhead(filter(totalTable, X1.1 == 2))\n\nhead(mutate(totalTable, X1.9 = X1.1 + X1.3))\n\ngroup_by(totalTable, X1.1) %>%\nsummarise(mean = mean(X5.20, na.rm = T), sum = sum(X2.2))\n```\n\n## 假设检验\n### t检验\n```{r t.test}\n#t检验\nt1 <- filter(totalTable, X1.1 == 1)\nt2 <- filter(totalTable, X1.1 == 2)\nt.test(t1$X5.20, t2$X5.20)\nt.test(t1$X5.20, t1$X5.18, paired = T)\n```\n\n### 方差分析\n```{r anova & lm}\ngetformula <- X5.1 ~ X1.1 * X1.3\nresult <- aov(getformula, totalTable)\nsummary(result)\nxtable::xtable(result)\n```\n\n### 卡方检验\n```{r chi.sq}\ntable(totalTable$X1.1, totalTable$X5.1)\n\nchisq.test(table(totalTable$X1.1, totalTable$X5.1))\n```\n\n",
+    "created" : 1481799128884.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2752648852",
+    "id" : "BFCC7A1E",
+    "lastKnownWriteTime" : 1481883461,
+    "last_content_update" : 1481883461971,
+    "path" : "~/Documents/Code/PsychoR-lesson/第三期R语言课程第五节.Rmd",
+    "project_path" : "第三期R语言课程第五节.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "docOutlineVisible" : "0",
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

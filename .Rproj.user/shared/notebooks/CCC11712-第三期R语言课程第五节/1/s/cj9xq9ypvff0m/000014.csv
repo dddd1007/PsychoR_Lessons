@@ -1,0 +1,7 @@
+"0","aggregate(totalTable$X5.20, list(totalTable$X1.1), t.test)
+"
+"2","Warning in `[<-.data.frame`(`*tmp*`, is_list, value = list(`2` = c(""<dbl [1]>"",  :"
+"2","
+ "
+"2"," replacement element 1 has 18 rows to replace 2 rows
+"

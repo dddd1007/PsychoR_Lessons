@@ -1,0 +1,166 @@
+---
+title: "dplyr练习"
+output: html_notebook
+---
+
+## 准备工作
+首先导入练习数据：
+```{r}
+install.packages("hflights")
+library(hflights)
+library(dplyr)
+hflights
+```
+
+讲解5个基本函数：select，filter，mutate，arrange，summarise
+
+## Select 函数
+
+Ex 2.1
+选出 AirTime, ArrDelay 以及 DepDelay 这几列
+```{r}
+select(hflights, AirTime, ArrDelay , DepDelay)
+```
+
+Ex 2.2
+选出Origin 到 Cancelled 这几列
+```{r}
+select(hflights, Origin : Cancelled)
+```
+注意，结果中是包含Cancelled的
+
+Ex 2.3
+熟悉几个辅助函数：starts_with("X")，ends_with("X")，contains("X")
+
+2.3.1
+选出记录所有起飞延迟与到达延迟的飞机的列
+```{r}
+select(hflights, ends_with("Delay"))
+```
+
+2.3.2
+选出所有所有记录起飞延迟与到达延迟，以及记录航班与时间相关信息的列
+```{r}
+select(hflights, contains("Time"),contains("Delay"))
+```
+
+## Filter 函数
+逻辑判断符：<, <=, ==, !=, %in%
+逻辑运算符：& (与), | (或), and ! (非)
+
+Ex 3.1
+筛选出飞行距离超过3000的航班
+```{r}
+filter(hflights, Distance >= 3000)
+```
+
+Ex 3.2
+筛选出航空公司为 JetBlue, Southwest, Delta 的航班
+```{r}
+filter(hflights, UniqueCarrier %in% c("JetBlue", "Southwest", "Delta"))
+```
+
+Ex 3.3
+筛选出滑行时间长于起飞时间的航班
+```{r}
+filter(hflights, (TaxiOut + TaxiIn) > AirTime)
+```
+
+Ex 3.4
+筛选出早晨5点前起飞，或半夜10点才降落的航班
+```{r}
+filter(hflights, DepTime < 500 | ArrTime > 2200)
+```
+
+Ex 3.5
+筛选出双休日被取消的航班
+```{r}
+filter(hflights, Cancelled != 0 & DayOfWeek %in% c(6,7))
+```
+
+Ex 3.6
+筛选出航班推迟随后取消的航班
+```{r}
+filter(hflights, Cancelled != 0 & DepDelay >0)
+```
+
+## Mutate 函数
+Ex 4.1
+计算滑行时间，新建一列称为TotalTaxi
+```{r}
+mutate(hfligths, TotalTaxi = TaxiIn + TaxiOut)
+```
+
+## Pip，Group_by 与 Summarise
+介绍管道操作符 %>%
+提示一个之前的题目：如果我们想看一下滑行时间长于起飞时间的航班中，滑行时间超过1个小时，且起飞时间早于8点的航班有哪些？
+原来的方法可以怎么做？
+```{r}
+f1 <- filter(hflights, (TaxiIn + TaxiOut) > AirTime)
+f2 <- mutate(f1, TotalTaxi = TaxiIn + TaxiOut)
+f3 <- filter(f2, TotalTaxi > 60)
+f4 <- filter(f3, DepTime < 800)
+f4
+```
+
+如果使用管道操作符
+```{r}
+hflights %>% 
+  filter((TaxiIn + TaxiOut) > AirTime) %>% 
+  mutate(TotalTaxi = TaxiIn + TaxiOut) %>% 
+  filter(TotalTaxi > 60) %>% 
+  filter(DepTime < 800)
+```
+
+Ex 5.1
+计算一下各个航空公司的平均航班取消率
+```{r}
+hflights %>%
+   group_by(UniqueCarrier) %>%
+   summarise(p_cancel = mean(Cancelled == 1) * 100)
+```
+
+Ex 5.2
+计算一下各个航空公司的平均航班延误时间
+```{r}
+hflights %>%
+   group_by(UniqueCarrier) %>%
+   summarise(avg_delay = mean(ArrDelay, na.rm = TRUE))
+```
+
+## 常见的统计分析
+### 描述统计
+sum(), mean(), sd()
+summary()
+describe()
+describe.by()
+```{r}
+psych::describe(hflights$DepTime)
+summary(hflights$DepTime)
+```
+
+
+### 相关
+cor()
+```{r}
+hflights %>% 
+  select(contains("Delay")) %>% 
+  na.omit() %>% 
+  cor()
+
+?cor
+```
+
+### 差异检验
+秩和检验
+```{r}
+DL <- filter(hflights, UniqueCarrier == "DL")
+OO <- filter(hflights, UniqueCarrier == "OO")
+wilcox.test(DL$ArrDelay, OO$ArrDelay)
+```
+
+### 卡方检验
+```{r}
+table(hflights$UniqueCarrier, hflights$Cancelled)
+chisq.test(table(hflights$UniqueCarrier, hflights$Cancelled)[1:2,])
+```

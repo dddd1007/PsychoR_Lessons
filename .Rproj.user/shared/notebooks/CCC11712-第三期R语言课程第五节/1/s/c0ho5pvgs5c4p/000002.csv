@@ -1,0 +1,25 @@
+"0","knir::opts_chunk$set(echo=FALSE)
+"
+"2","Error in loadNamespace(name) : there is no package called ‘knir’
+"
+"2","In addition: "
+"2","Warning messages:
+"
+"2","1: "
+"2","In `[<-.data.frame`(`*tmp*`, is_list, value = list(`2` = c(""<dbl [1]>"",  :"
+"2","
+ "
+"2"," replacement element 1 has 18 rows to replace 2 rows
+"
+"2","2: "
+"2","In `[<-.data.frame`(`*tmp*`, is_list, value = list(`2` = c(""<dbl [1]>"",  :"
+"2","
+ "
+"2"," replacement element 1 has 18 rows to replace 2 rows
+"
+"2","3: "
+"2","In `[<-.data.frame`(`*tmp*`, is_list, value = list(`2` = c(""<dbl [1]>"",  :"
+"2","
+ "
+"2"," replacement element 1 has 18 rows to replace 2 rows
+"

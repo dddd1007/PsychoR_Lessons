@@ -1,0 +1,69 @@
+"0","getformula <- X5.1 ~ X1.1 * X1.3"
+"0","result <- aov(getformula, totalTable)"
+"0","summary(result)"
+"1","           "
+"1","  Df"
+"1"," Sum Sq"
+"1"," Mean Sq"
+"1"," F value"
+"1"," Pr(>F)"
+"1","  "
+"1","
+X1.1       "
+"1","   1"
+"1","   13.4"
+"1","  13.423"
+"1","   3.837"
+"1"," 0.0508"
+"1"," ."
+"1","
+X1.3       "
+"1","   1"
+"1","    5.0"
+"1","   5.004"
+"1","   1.431"
+"1"," 0.2323"
+"1","  "
+"1","
+X1.1:X1.3  "
+"1","   1"
+"1","    0.4"
+"1","   0.372"
+"1","   0.106"
+"1"," 0.7445"
+"1","  "
+"1","
+Residuals  "
+"1"," 429"
+"1"," 1500.7"
+"1","   3.498"
+"1","        "
+"1","       "
+"1","  "
+"1","
+"
+"1","---
+Signif. codes:  "
+"1","0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1"
+"1","
+"
+"1","24 observations deleted due to missingness"
+"1","
+"
+"0","xtable::xtable(result)"
+"1","% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Fri Dec 16 18:14:03 2016
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\ 
+  \hline
+X1.1 & 1 & 13.42 & 13.42 & 3.84 & 0.0508 \\ 
+  X1.3 & 1 & 5.00 & 5.00 & 1.43 & 0.2323 \\ 
+  X1.1:X1.3 & 1 & 0.37 & 0.37 & 0.11 & 0.7445 \\ 
+  Residuals & 429 & 1500.72 & 3.50 &  &  \\ 
+   \hline
+\end{tabular}
+\end{table}
+"

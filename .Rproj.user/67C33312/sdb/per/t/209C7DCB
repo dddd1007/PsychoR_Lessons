@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"Untitled\"\ndate: \"2016/12/16\"\noutput: pdf_document\n---\n\n\\begin{table}[ht]\n\\centering\n\\begin{tabular}{lrrrrr}\n  \\hline\n & Df & Sum Sq & Mean Sq & F value & Pr($>$F) \\\\ \n  \\hline\nX1.1 & 1 & 13.42 & 13.42 & 3.84 & 0.0508 \\\\ \n  X1.3 & 1 & 5.00 & 5.00 & 1.43 & 0.2323 \\\\ \n  X1.1:X1.3 & 1 & 0.37 & 0.37 & 0.11 & 0.7445 \\\\ \n  Residuals & 429 & 1500.72 & 3.50 &  &  \\\\ \n   \\hline\n\\end{tabular}\n\\end{table}\n",
+    "created" : 1481883270653.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2997813034",
+    "id" : "209C7DCB",
+    "lastKnownWriteTime" : 1481883294,
+    "last_content_update" : 1481883294946,
+    "path" : "~/Documents/Code/PsychoR-lesson/Untitled.Rmd",
+    "project_path" : "Untitled.Rmd",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
